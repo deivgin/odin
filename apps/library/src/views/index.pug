@@ -3,8 +3,17 @@ html
     title= title
   body
     h1 Library
-    ul
+    ul#library
       each item in items
-        li.libraryItem= item.name
+        include item.pug
+    form(
+      hx-post='/api/addItem',
+      hx-target='#library',
+      hx-swap='beforeend',
+      hx-trigger='submit',
+      hx-on::after-request='this.reset()'
+    )
+      input(type='text', name='name', hx-swap='none')
+      button(type='submit') Add Item
 
-    script(src="https://unpkg.com/htmx.org@1.9.12")
+    script(src='https://unpkg.com/htmx.org@1.9.12')
