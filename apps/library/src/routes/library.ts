@@ -3,6 +3,11 @@ import { libraryController } from "../controller/library.controller";
 
 const router = express.Router();
 
+router.get("/getItems", (req, res) => {
+  const items = libraryController.getItems();
+  res.status(200).json(items);
+});
+
 router.post("/addItem", (req, res) => {
   console.log(req.body);
 

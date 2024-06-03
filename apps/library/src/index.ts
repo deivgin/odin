@@ -1,6 +1,7 @@
 import express from "express";
 import libraryRouter from "./routes/library";
 import path from "node:path";
+import { libraryController } from "./controller/library.controller";
 
 const app = express();
 const port = 3000;
@@ -11,7 +12,8 @@ app.set("view engine", "pug");
 app.use("/api", libraryRouter);
 
 app.get("/", (req, res) => {
-  res.render("index", { title: "Hey", message: "Hello there!" });
+  const items = libraryController.getItems();
+  res.render("index", { title: "Library App", items });
 });
 
 app.listen(port, () => {
