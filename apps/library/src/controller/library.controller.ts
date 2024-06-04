@@ -1,8 +1,8 @@
-import { LibraryItem } from "../model/library.model";
+import { LibraryItem } from '../model/library.model';
 
 const fakeData: LibraryItem[] = [
-  { id: "1", name: "item 1" },
-  { id: "2", name: "item 2" },
+  { id: '1', title: 'item 1' },
+  { id: '2', title: 'item 2' },
 ];
 
 class LibraryController {
@@ -18,10 +18,10 @@ class LibraryController {
     return fakeData;
   }
 
-  addItem(item: { name: string }) {
+  addItem(item: Partial<LibraryItem>) {
     const newItem: LibraryItem = {
       id: this.generateId(),
-      name: item.name,
+      title: item.title ?? '',
     };
 
     fakeData.push(newItem);
@@ -29,9 +29,17 @@ class LibraryController {
     return newItem;
   }
 
-  updateItem(id: string, item: LibraryItem) {
-    const index = fakeData.findIndex((item) => item.id === id);
-    fakeData[index] = item;
+  updateItem(item: Partial<LibraryItem>) {
+    const index = fakeData.findIndex((x) => x.id === item.id);
+
+    const updatedItem = {
+      ...fakeData[index],
+      ...item,
+    };
+
+    fakeData[index] = updatedItem;
+
+    return updatedItem;
   }
 
   deleteItem(id: string) {

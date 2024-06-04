@@ -1,27 +1,36 @@
-import express from 'express'
-import { libraryController } from '../controller/library.controller'
-import bodyParser from 'body-parser'
+import express from 'express';
+import { libraryController } from '../controller/library.controller';
+import bodyParser from 'body-parser';
 
-const router = express.Router()
+const router = express.Router();
+const parser = bodyParser.urlencoded({ extended: false });
 
-router.get('/getItems', (req, res) => {
-  const items = libraryController.getItems()
-  res.status(200).json(items)
-})
+router.get('/get-items', (req, res) => {
+  const items = libraryController.getItems();
+  res.status(200).json(items);
+});
 
-router.post(
-  '/addItem',
-  bodyParser.urlencoded({ extended: false }),
-  (req, res) => {
-    const createdItem = libraryController.addItem(req.body)
-    res.render('item', { item: createdItem })
-  }
-)
+router.post('/add-item', parser, (req, res) => {
+  const createdItem = libraryController.addItem(req.body);
+  res.render('item', { item: createdItem });
+});
 
-router.delete('/deleteItem', (req, res) => {
-  const itemId = req.body
-  libraryController.deleteItem(itemId)
-  res.status(204).send()
-})
+router.post('/toggle-edit', parser, (req, res) => {
+  const itemId = req.body.id;
+  const item = libraryController.getItem(itemId);
 
-export default router
+  res.render('item-edit', { item });
+});
+
+router.delete('/delete-item', parser, (req, res) => {
+  const itemId = req.body.id;
+  libraryController.deleteItem(itemId);
+  res.status(200).send();
+});
+
+router.put('/update-item', parser, (req, res) => {
+  const updatedItem = libraryController.updateItem(req.body);
+  res.render('item', { item: updatedItem });
+});
+
+export default router;

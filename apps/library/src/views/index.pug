@@ -2,19 +2,20 @@ html
   head
     title= title
     link(rel='stylesheet', type='text/css', href='css/main.css')
+
   body
     h1 Library
     ul#library
       each item in items
         include item.pug
     form(
-      hx-post='/api/addItem',
+      hx-post='/api/add-item',
       hx-target='#library',
       hx-swap='beforeend',
       hx-trigger='submit',
       hx-on::after-request='this.reset()'
     )
-      input(type='text', name='name', hx-swap='none')
+      input(type='text', name='title', placeholder='Title')
       button(type='submit') Add Item
 
-    script(src='https://unpkg.com/htmx.org@1.9.12')
+  script(src='https://unpkg.com/htmx.org@1.9.12')
